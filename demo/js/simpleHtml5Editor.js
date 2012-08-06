@@ -10,39 +10,63 @@
       this.langs = ['Enter URL', 'Enter Image URL'];
       this.button_creator = [
         {
-          'tag': 'bold',
-          'format': '',
-          'name': '<i class="icon-bold"></i>'
+          'editor_formatting': [
+            {
+              'tag': 'bold',
+              'format': '',
+              'name': '<i class="icon-bold"></i>'
+            }, {
+              'tag': 'underline',
+              'format': '',
+              'name': '<i class="icon-underline"></i>'
+            }, {
+              'tag': 'strikeThrough',
+              'format': '',
+              'name': '<i class="icon-strikethrough"></i>'
+            }, {
+              'tag': 'subscript',
+              'format': '',
+              'name': 'T<sub>x</sub>'
+            }, {
+              'tag': 'superscript',
+              'format': '',
+              'name': 'T<sup>x</sub>'
+            }
+          ]
         }, {
-          'tag': 'underline',
-          'format': '',
-          'name': '<ins>U</ins>'
+          'editor_indentation': [
+            {
+              'tag': 'indent',
+              'format': '',
+              'name': '<b class=icon-indent-left></b>'
+            }, {
+              'tag': 'outdent',
+              'format': '',
+              'name': '<b class=icon-indent-right></b>'
+            }
+          ]
         }, {
-          'tag': 'strikeThrough',
-          'format': '',
-          'name': '<del>S</del>'
+          'editor_justify': [
+            {
+              'tag': 'justifyLeft',
+              'format': '',
+              'name': '<i class="icon-align-left"></i>'
+            }, {
+              'tag': 'justifyCenter',
+              'format': '',
+              'name': '<i class="icon-align-center"></i>'
+            }, {
+              'tag': 'justifyRight',
+              'format': '',
+              'name': '<i class="icon-align-right"></i>'
+            }
+          ]
         }, {
-          'tag': 'subscript',
-          'format': '',
-          'name': 'T<sub>x</sub>'
-        }, {
-          'tag': 'superscript',
-          'format': '',
-          'name': 'T<sup>x</sub>'
-        }, {
-          'tag': 'indent',
-          'format': '',
-          'name': '<b class=icon-indent-left></b>'
-        }, {
-          'tag': 'outdent',
-          'format': '',
-          'name': '<b class=icon-indent-right></b>'
-        }, {
-          '<b class=icon-text-height></b>': [
+          'select': [
             {
               'tag': 'formatBlock',
               'format': 'p',
-              'name': 'Paragraph'
+              'name': '<i class="icon-paragraph"></i>Paragraph'
             }, {
               'tag': 'formatBlock',
               'format': 'h1',
@@ -57,18 +81,6 @@
               'name': 'Header 3'
             }
           ]
-        }, {
-          'tag': 'justifyRight',
-          'format': '',
-          'name': '<i class="icon-align-left"></i>'
-        }, {
-          'tag': 'justifyCenter',
-          'format': '',
-          'name': '<i class="icon-align-center"></i>'
-        }, {
-          'tag': 'justifyLeft',
-          'format': '',
-          'name': '<i class="icon-align-right"></i>'
         }
       ];
       _ref = this.button_creator;
@@ -76,23 +88,51 @@
         btn = _ref[_i];
         this.create_button(btn);
       }
-      ($('.editor-button')).on('click', this.execcmd);
+      ($('.editor_button')).on('click', this.execcmd);
       ($('.editor_nav')).on('change', this.execcmd);
     }
 
+    SimpleHtml5Editor.prototype.create_group = function(name, element) {
+      var elem, html;
+      html = "<div class='editor_group " + name + "'>";
+      for (elem in element) {
+        html += '<a href=# class=editor_button data-format=\"' + element[elem]['format'] + '\" data-tag=\"' + element[elem]['tag'] + '\"  >' + element[elem]['name'] + '</a>';
+      }
+      html += "</div>";
+      return html;
+    };
+
+    SimpleHtml5Editor.prototype.create_select = function(element) {
+      var elem, html;
+      html = "<select class='editor_nav'>";
+      for (elem in element) {
+        html += '<option data-format=\"' + element[elem]['format'] + '\" data-tag=\"' + element[elem]['tag'] + '\"  >' + element[elem]['name'] + '</option>';
+      }
+      html += "</select>";
+      return html;
+    };
+
     SimpleHtml5Editor.prototype.create_button = function(btn) {
-      var elem, element, html, name;
+      var element, html, name;
       if (btn['tag']) {
-        html = '<a class="editor-button" href="#" data-format=\"' + btn['format'] + '\" data-tag=\"' + btn['tag'] + '\"  >' + btn['name'] + '</a>';
+        html = '<a class="editor_button" href="#" data-format=\"' + btn['format'] + '\" data-tag=\"' + btn['tag'] + '\"  >' + btn['name'] + '</a>';
       } else {
-        html = "<select class='editor_nav'>";
         for (name in btn) {
           element = btn[name];
-          for (elem in element) {
-            html += '<option data-format=\"' + element[elem]['format'] + '\" data-tag=\"' + element[elem]['tag'] + '\"  >' + element[elem]['name'] + '</option>';
+          console.log(name, element);
+        }
+        if (name === "select") {
+          for (name in btn) {
+            element = btn[name];
+            html = this.create_select(element);
           }
         }
-        html += "</select>";
+        if (name !== "select") {
+          for (name in btn) {
+            element = btn[name];
+            html = this.create_group(name, element);
+          }
+        }
       }
       return this.element.prepend(html);
     };
@@ -104,8 +144,11 @@
         target = target[target.selectedIndex];
       } else if (!($(target)).is('a')) {
         target = ($(target)).parent()[0];
+      } else if (!($(target)).is('a')) {
+        target = ($(target)).parent()[0];
       }
       tag = target.dataset['tag'];
+      console.log(target);
       if (tag === "formatBlock") {
         data = target.dataset['format'];
       } else if (tag === 'createlink' || tag === 'insertImage') {

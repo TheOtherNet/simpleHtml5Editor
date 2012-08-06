@@ -716,19 +716,23 @@ ul.icons li .icon-large:before {
 .icon-user-md:before {
   content: "\f200";
 }
+.editor_group {
+  display: inline-block;
+  border-left: 2px dashed #ffffff;
+}
 .hidden {
   display: none;
 }
 .simpleHtml5Editor a {
   color: black;
   text-align: center;
-  padding-left: 2px;
-  padding-right: 2px;
-  padding-botton: 1px;
-  padding-top: 1px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-botton: 4px;
+  padding-top: 2px;
   margin: 3px;
   text-decoration: none;
-  background: #8080ff;
+  background: #b3b3ff;
   text-align: center;
   border-radius: 2px;
   font-weight: bold;

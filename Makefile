@@ -3,14 +3,15 @@
 all: build compress
 
 compress:
-	yui-compressor --type js ./simpleHtml5Editor.js > simpleHtml5Editor.min.js
-	yui-compressor --type css simpleHtml5Editor.css > simpleHtml5Editor.min.css
+	yui-compressor --type js js/simpleHtml5Editor.js > js/simpleHtml5Editor.min.js
+	yui-compressor --type css css/simpleHtml5Editor.css > css/simpleHtml5Editor.min.css
 
 build:
-	coffee --join ./simpleHtml5Editor.js --compile coffee/*.coffee
-	lessc less/main.less simpleHtml5Editor.css
+	mkdir js css
+	coffee --join ./js/simpleHtml5Editor.js --compile coffee/*.coffee
+	lessc less/main.less css/simpleHtml5Editor.css
 
 clean:
-	rm simpleHtml5Editor.js simpleHtml5Editor.min.js simpleHtml5Editor.css simpleHtml5Editor.min.css
+	rm -rf css/simpleHtml5Editor.css css/simpleHtml5Editor.min.css js/simpleHtml5Editor.js js/simpleHtml5Editor.min.js
 
 .PONY: clean build compress all

@@ -9,6 +9,7 @@ compress:
 build: dirs
 	coffee --join ./js/simpleHtml5Editor.js --compile coffee/*.coffee
 	lessc less/main.less css/simpleHtml5Editor.css
+	cp -r less/font-awesome/font css/
 
 dirs:
 	@mkdir js css &>/dev/null

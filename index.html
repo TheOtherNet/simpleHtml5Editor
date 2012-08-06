@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>SimpleHtml5Editor</title>
+		<script src="libs/zepto.min.js"></script>
+		<script src="js/simpleHtml5Editor.js"> </script>
+		<link href="css/simpleHtml5Editor.css" rel="stylesheet">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body>
+		<div id="editor" class="simpleHtml5Editor alert alert-info"></div>
+		<div class="row-fluid">
+			<div class="span11" style="float:none; margin-left:auto; margin-right:auto;">
+				<div class="span4">
+					<div class="well">
+						<p> You can't edit this... </p>
+						<p contentEditable=true> but you can edit this </p>
+					</div>
+						<div class="alert alert-info">
+							This plugin does not require twitter bootstrap, but looke quite better with it, for example, I've done all dropdowns with bootstrap, and the styles are great.
+						</div>
+						<div class="alert alert-danger">
+							You can modify the buttons, It's a painless system, just check out the editor.coffee file and the array defining them!.
+						</div>
+					<div class="well">
+					</div>
+				</div>
+				<div class="span6">
+					<div contentEditable="true" class="well">
+						<h2> This is a completly editable section </h2>
+						<p>
+							En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que carnero, salpicón las más noches, duelos y quebrantos los sábados, lentejas los viernes, algún palomino de añadidura los domingos, consumían las tres partes de su hacienda. El resto della concluían sayo de velarte, calzas de velludo para las fiestas con sus pantuflos de lo mismo, los días de entre semana se honraba con su vellori de lo más fino. Tenía en su casa una ama que pasaba de los cuarenta, y una sobrina que no llegaba a los veinte, y un mozo de campo y plaza, que así ensillaba el rocín como tomaba la podadera. Frisaba la edad de nuestro hidalgo con los cincuenta años, era de complexión recia, seco de carnes, enjuto de rostro; gran madrugador y amigo de la caza. Quieren decir que tenía el sobrenombre de Quijada o Quesada (que en esto hay alguna diferencia en los autores que deste caso escriben), aunque por conjeturas verosímiles se deja entender que se llama Quijana; pero esto importa poco a nuestro cuento; basta que en la narración dél no se salga un punto de la verdad. </p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script> $('#editor').simpleHtml5Editor(); </script>
+	</body>
+</html>

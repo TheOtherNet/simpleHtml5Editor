@@ -4,7 +4,7 @@ class SimpleHtml5Editor
     @button_creator = [
       { 'tag' : 'bold', 'format': '', 'name' : '<i class="icon-bold"></i>' },
       { 'tag' : 'underline', 'format': '', 'name' : '<ins>U</ins>' },
-      { 'tag' : 'strikeTrough', 'format': '', 'name' : '<del>S</del>' },
+      { 'tag' : 'strikeThrough', 'format': '', 'name' : '<del>S</del>' },
       { 'tag' : 'subscript', 'format': '', 'name' : 'T<sub>x</sub>' },
       { 'tag' : 'superscript', 'format': '', 'name' : 'T<sup>x</sub>' },
       { 'tag' : 'indent', 'format': '', 'name' : '<b class=icon-indent-left></b>' },
@@ -39,6 +39,8 @@ class SimpleHtml5Editor
     target = ev.target
     if ($ target) .is 'select'
       target = target[target.selectedIndex]
+    if not ($ target) .is 'a'
+      target = ($ target).parent()[0]
     tag = target.dataset['tag']
 
     if tag == "formatBlock"

@@ -39,7 +39,7 @@ class SimpleHtml5Editor
     target = ev.target
     if ($ target) .is 'select'
       target = target[target.selectedIndex]
-    if not ($ target) .is 'a'
+    else if not ($ target) .is 'a'
       target = ($ target).parent()[0]
     tag = target.dataset['tag']
 
@@ -47,9 +47,6 @@ class SimpleHtml5Editor
       data = target.dataset['format']
     else if tag in [ 'createlink', 'insertImage' ]
       data = prompt(@langs[tag])
-    console.log target
-    console.log tag
-    console.log data
     if data
       return document.execCommand(tag, false, data)
     document.execCommand(tag, false)

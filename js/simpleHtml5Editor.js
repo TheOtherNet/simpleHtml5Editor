@@ -10,35 +10,83 @@
       this.langs = ['Enter URL', 'Enter Image URL'];
       this.button_creator = [
         {
-          'tag': 'bold',
-          'format': '',
-          'name': '<i class="icon-bold"></i>'
+          'editor_remove_format': [
+            {
+              'tag': 'removeFormat',
+              'format': '',
+              'name': '<i title="Remove format in selection" class="icon-remove"></i>'
+            }
+          ]
         }, {
-          'tag': 'underline',
-          'format': '',
-          'name': '<ins>U</ins>'
+          'editor_formatting': [
+            {
+              'tag': 'bold',
+              'format': '',
+              'name': '<i title="Bold" class="icon-bold"></i>'
+            }, {
+              'tag': 'underline',
+              'format': '',
+              'name': '<i title="Underline" class="icon-underline"></i>'
+            }, {
+              'tag': 'strikeThrough',
+              'format': '',
+              'name': '<i title="Strike Trough" class="icon-strikethrough"></i>'
+            }
+          ]
         }, {
-          'tag': 'strikeThrough',
-          'format': '',
-          'name': '<del>S</del>'
+          'editor_sub': [
+            {
+              'tag': 'subscript',
+              'format': '',
+              'name': 'T<sub title="subscript">x</sub>'
+            }, {
+              'tag': 'superscript',
+              'format': '',
+              'name': 'T<sup title="superscript">x</sub>'
+            }
+          ]
         }, {
-          'tag': 'subscript',
-          'format': '',
-          'name': 'T<sub>x</sub>'
+          'editor_lists': [
+            {
+              'tag': 'insertUnorderedList',
+              'format': '',
+              'name': '<b title="Unordered list" class=icon-list-ul></b>'
+            }, {
+              'tag': 'insertOrderedList',
+              'format': '',
+              'name': '<b title="Ordered list" class=icon-list-ol></b>'
+            }
+          ]
         }, {
-          'tag': 'superscript',
-          'format': '',
-          'name': 'T<sup>x</sub>'
+          'editor_indentation': [
+            {
+              'tag': 'indent',
+              'format': '',
+              'name': '<b class=icon-indent-left title="Indent"></b>'
+            }, {
+              'tag': 'outdent',
+              'format': '',
+              'name': '<b class=icon-indent-right title="Outdent"></b>'
+            }
+          ]
         }, {
-          'tag': 'indent',
-          'format': '',
-          'name': '<b class=icon-indent-left></b>'
+          'editor_justify': [
+            {
+              'tag': 'justifyLeft',
+              'format': '',
+              'name': '<i title="Align left" class="icon-align-left"></i>'
+            }, {
+              'tag': 'justifyCenter',
+              'format': '',
+              'name': '<i class="icon-align-center" title="Center"></i>'
+            }, {
+              'tag': 'justifyRight',
+              'format': '',
+              'name': '<i class="icon-align-right" title="Align right"></i>'
+            }
+          ]
         }, {
-          'tag': 'outdent',
-          'format': '',
-          'name': '<b class=icon-indent-right></b>'
-        }, {
-          '<b class=icon-text-height></b>': [
+          'select': [
             {
               'tag': 'formatBlock',
               'format': 'p',
@@ -58,17 +106,25 @@
             }
           ]
         }, {
-          'tag': 'justifyRight',
-          'format': '',
-          'name': '<i class="icon-align-left"></i>'
-        }, {
-          'tag': 'justifyCenter',
-          'format': '',
-          'name': '<i class="icon-align-center"></i>'
-        }, {
-          'tag': 'justifyLeft',
-          'format': '',
-          'name': '<i class="icon-align-right"></i>'
+          'select': [
+            {
+              'tag': 'fontName',
+              'format': 'Arial',
+              'name': 'Arial'
+            }, {
+              'tag': 'fontName',
+              'format': 'Helvetica',
+              'name': 'Helvetica'
+            }, {
+              'tag': 'fontName',
+              'format': 'Times',
+              'name': 'Times'
+            }, {
+              'tag': 'fontName',
+              'format': 'Courier',
+              'name': 'Courier'
+            }
+          ]
         }
       ];
       _ref = this.button_creator;
@@ -76,23 +132,51 @@
         btn = _ref[_i];
         this.create_button(btn);
       }
-      ($('.editor-button')).on('click', this.execcmd);
+      ($('.editor_button')).on('click', this.execcmd);
       ($('.editor_nav')).on('change', this.execcmd);
     }
 
+    SimpleHtml5Editor.prototype.create_group = function(name, element) {
+      var elem, html;
+      html = "<div class='editor_group " + name + "'>";
+      for (elem in element) {
+        html += '<a href=# class=editor_button data-format=\"' + element[elem]['format'] + '\" data-tag=\"' + element[elem]['tag'] + '\"  >' + element[elem]['name'] + '</a>';
+      }
+      html += "</div>";
+      return html;
+    };
+
+    SimpleHtml5Editor.prototype.create_select = function(element) {
+      var elem, html;
+      html = "<select class='editor_nav'>";
+      for (elem in element) {
+        html += '<option data-format=\"' + element[elem]['format'] + '\" data-tag=\"' + element[elem]['tag'] + '\"  >' + element[elem]['name'] + '</option>';
+      }
+      html += "</select>";
+      return html;
+    };
+
     SimpleHtml5Editor.prototype.create_button = function(btn) {
-      var elem, element, html, name;
+      var element, html, name;
       if (btn['tag']) {
-        html = '<a class="editor-button" href="#" data-format=\"' + btn['format'] + '\" data-tag=\"' + btn['tag'] + '\"  >' + btn['name'] + '</a>';
+        html = '<a class="editor_button" href="#" data-format=\"' + btn['format'] + '\" data-tag=\"' + btn['tag'] + '\"  >' + btn['name'] + '</a>';
       } else {
-        html = "<select class='editor_nav'>";
         for (name in btn) {
           element = btn[name];
-          for (elem in element) {
-            html += '<option data-format=\"' + element[elem]['format'] + '\" data-tag=\"' + element[elem]['tag'] + '\"  >' + element[elem]['name'] + '</option>';
+          console.log(name, element);
+        }
+        if (name !== "select") {
+          for (name in btn) {
+            element = btn[name];
+            html = this.create_group(name, element);
           }
         }
-        html += "</select>";
+        if (name === "select") {
+          for (name in btn) {
+            element = btn[name];
+            html = this.create_select(element);
+          }
+        }
       }
       return this.element.prepend(html);
     };
@@ -102,19 +186,17 @@
       target = ev.target;
       if (($(target)).is('select')) {
         target = target[target.selectedIndex];
-      }
-      if (!($(target)).is('a')) {
+      } else if (!($(target)).is('a')) {
+        target = ($(target)).parent()[0];
+      } else if (!($(target)).is('a')) {
         target = ($(target)).parent()[0];
       }
       tag = target.dataset['tag'];
-      if (tag === "formatBlock") {
-        data = target.dataset['format'];
-      } else if (tag === 'createlink' || tag === 'insertImage') {
+      console.log(target);
+      data = target.dataset['format'];
+      if (tag === 'createlink' || tag === 'insertImage') {
         data = prompt(this.langs[tag]);
       }
-      console.log(target);
-      console.log(tag);
-      console.log(data);
       if (data) {
         return document.execCommand(tag, false, data);
       }

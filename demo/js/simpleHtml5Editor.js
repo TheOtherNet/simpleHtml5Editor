@@ -10,27 +10,51 @@
       this.langs = ['Enter URL', 'Enter Image URL'];
       this.button_creator = [
         {
+          'editor_remove_format': [
+            {
+              'tag': 'removeFormat',
+              'format': '',
+              'name': '<i title="Remove format in selection" class="icon-remove"></i>'
+            }
+          ]
+        }, {
           'editor_formatting': [
             {
               'tag': 'bold',
               'format': '',
-              'name': '<i class="icon-bold"></i>'
+              'name': '<i title="Bold" class="icon-bold"></i>'
             }, {
               'tag': 'underline',
               'format': '',
-              'name': '<i class="icon-underline"></i>'
+              'name': '<i title="Underline" class="icon-underline"></i>'
             }, {
               'tag': 'strikeThrough',
               'format': '',
-              'name': '<i class="icon-strikethrough"></i>'
-            }, {
+              'name': '<i title="Strike Trough" class="icon-strikethrough"></i>'
+            }
+          ]
+        }, {
+          'editor_sub': [
+            {
               'tag': 'subscript',
               'format': '',
-              'name': 'T<sub>x</sub>'
+              'name': 'T<sub title="subscript">x</sub>'
             }, {
               'tag': 'superscript',
               'format': '',
-              'name': 'T<sup>x</sub>'
+              'name': 'T<sup title="superscript">x</sub>'
+            }
+          ]
+        }, {
+          'editor_lists': [
+            {
+              'tag': 'insertUnorderedList',
+              'format': '',
+              'name': '<b title="Unordered list" class=icon-list-ul></b>'
+            }, {
+              'tag': 'insertOrderedList',
+              'format': '',
+              'name': '<b title="Ordered list" class=icon-list-ol></b>'
             }
           ]
         }, {
@@ -38,11 +62,11 @@
             {
               'tag': 'indent',
               'format': '',
-              'name': '<b class=icon-indent-left></b>'
+              'name': '<b class=icon-indent-left title="Indent"></b>'
             }, {
               'tag': 'outdent',
               'format': '',
-              'name': '<b class=icon-indent-right></b>'
+              'name': '<b class=icon-indent-right title="Outdent"></b>'
             }
           ]
         }, {
@@ -50,15 +74,15 @@
             {
               'tag': 'justifyLeft',
               'format': '',
-              'name': '<i class="icon-align-left"></i>'
+              'name': '<i title="Align left" class="icon-align-left"></i>'
             }, {
               'tag': 'justifyCenter',
               'format': '',
-              'name': '<i class="icon-align-center"></i>'
+              'name': '<i class="icon-align-center" title="Center"></i>'
             }, {
               'tag': 'justifyRight',
               'format': '',
-              'name': '<i class="icon-align-right"></i>'
+              'name': '<i class="icon-align-right" title="Align right"></i>'
             }
           ]
         }, {
@@ -66,7 +90,7 @@
             {
               'tag': 'formatBlock',
               'format': 'p',
-              'name': '<i class="icon-paragraph"></i>Paragraph'
+              'name': 'Paragraph'
             }, {
               'tag': 'formatBlock',
               'format': 'h1',
@@ -79,6 +103,26 @@
               'tag': 'formatBlock',
               'format': 'h3',
               'name': 'Header 3'
+            }
+          ]
+        }, {
+          'select': [
+            {
+              'tag': 'fontName',
+              'format': 'Arial',
+              'name': 'Arial'
+            }, {
+              'tag': 'fontName',
+              'format': 'Helvetica',
+              'name': 'Helvetica'
+            }, {
+              'tag': 'fontName',
+              'format': 'Times',
+              'name': 'Times'
+            }, {
+              'tag': 'fontName',
+              'format': 'Courier',
+              'name': 'Courier'
             }
           ]
         }
@@ -121,16 +165,16 @@
           element = btn[name];
           console.log(name, element);
         }
-        if (name === "select") {
-          for (name in btn) {
-            element = btn[name];
-            html = this.create_select(element);
-          }
-        }
         if (name !== "select") {
           for (name in btn) {
             element = btn[name];
             html = this.create_group(name, element);
+          }
+        }
+        if (name === "select") {
+          for (name in btn) {
+            element = btn[name];
+            html = this.create_select(element);
           }
         }
       }
@@ -149,9 +193,8 @@
       }
       tag = target.dataset['tag'];
       console.log(target);
-      if (tag === "formatBlock") {
-        data = target.dataset['format'];
-      } else if (tag === 'createlink' || tag === 'insertImage') {
+      data = target.dataset['format'];
+      if (tag === 'createlink' || tag === 'insertImage') {
         data = prompt(this.langs[tag]);
       }
       if (data) {

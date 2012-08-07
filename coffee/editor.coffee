@@ -2,25 +2,37 @@ class SimpleHtml5Editor
   constructor: (@element, movement) ->
     @langs = [ 'Enter URL', 'Enter Image URL' ]
     @button_creator = [
+      { 'editor_remove_format': [{ 'tag' : 'removeFormat', 'format': '', 'name': '<i title="Remove format in selection" class="icon-remove"></i>' }]},
       { 'editor_formatting': [
-        { 'tag' : 'bold', 'format': '', 'name' : '<i class="icon-bold"></i>' },
-        { 'tag' : 'underline', 'format': '', 'name' : '<i class="icon-underline"></i>' },
-        { 'tag' : 'strikeThrough', 'format': '', 'name' : '<i class="icon-strikethrough"></i>' },
-        { 'tag' : 'subscript', 'format': '', 'name' : 'T<sub>x</sub>' },
-        { 'tag' : 'superscript', 'format': '', 'name' : 'T<sup>x</sub>' },]
+        { 'tag' : 'bold', 'format': '', 'name' : '<i title="Bold" class="icon-bold"></i>' },
+        { 'tag' : 'underline', 'format': '', 'name' : '<i title="Underline" class="icon-underline"></i>' },
+        { 'tag' : 'strikeThrough', 'format': '', 'name' : '<i title="Strike Trough" class="icon-strikethrough"></i>' },]}
+      { 'editor_sub': [
+        { 'tag' : 'subscript', 'format': '', 'name' : 'T<sub title="subscript">x</sub>' },
+        { 'tag' : 'superscript', 'format': '', 'name' : 'T<sup title="superscript">x</sub>' },]
       },
+      { 'editor_lists' : [
+        { 'tag' : 'insertUnorderedList',  'format': '', 'name' : '<b title="Unordered list" class=icon-list-ul></b>' },
+        { 'tag' : 'insertOrderedList',  'format': '', 'name' : '<b title="Ordered list" class=icon-list-ol></b>' },
+      ]}
       { 'editor_indentation' : [
-        { 'tag' : 'indent',  'format': '', 'name' : '<b class=icon-indent-left></b>' },
-        { 'tag' : 'outdent', 'format': '', 'name' : '<b class=icon-indent-right></b>' },]}
-      { 'editor_justify' : [{ 'tag' : 'justifyLeft',  'format': '', 'name' : '<i class="icon-align-left"></i>'   },
-        { 'tag' : 'justifyCenter', 'format': '', 'name' : '<i class="icon-align-center"></i>' },
-        { 'tag' : 'justifyRight',  'format': '', 'name' : '<i class="icon-align-right"></i>'  },]
+        { 'tag' : 'indent',  'format': '', 'name' : '<b class=icon-indent-left title="Indent"></b>' },
+        { 'tag' : 'outdent', 'format': '', 'name' : '<b class=icon-indent-right title="Outdent"></b>' },]}
+
+      { 'editor_justify' : [{ 'tag' : 'justifyLeft',  'format': '', 'name' : '<i title="Align left" class="icon-align-left"></i>'   },
+        { 'tag' : 'justifyCenter', 'format': '', 'name' : '<i class="icon-align-center" title="Center"></i>' },
+        { 'tag' : 'justifyRight',  'format': '', 'name' : '<i class="icon-align-right" title="Align right"></i>'  },]
       },
-      { 'select' : [{ 'tag' : 'formatBlock', 'format': 'p', 'name' : '<i class="icon-paragraph"></i>Paragraph' },
+      { 'select' : [{ 'tag' : 'formatBlock', 'format': 'p', 'name' : 'Paragraph' },
         { 'tag' : 'formatBlock', 'format': 'h1', 'name' : 'Header' },
         { 'tag' : 'formatBlock', 'format': 'h2', 'name' : 'Header 2' },
         { 'tag' : 'formatBlock', 'format': 'h3', 'name' : 'Header 3' },]
       },
+      { 'select' : [{ 'tag' : 'fontName', 'format': 'Arial', 'name' : 'Arial' },
+        { 'tag' : 'fontName', 'format': 'Helvetica', 'name' : 'Helvetica' },
+        { 'tag' : 'fontName', 'format': 'Times', 'name' : 'Times' },
+        { 'tag' : 'fontName', 'format': 'Courier', 'name' : 'Courier' },
+      ]},
     ]
     @create_button(btn) for btn in @button_creator
     ($ '.editor_button').on 'click', @execcmd
@@ -48,8 +60,8 @@ class SimpleHtml5Editor
         '\" data-tag=\"' + btn['tag'] + '\"  >' + btn['name'] + '</a>'
     else
       console.log name, element for name, element of btn
-      html = @create_select(element) for name, element of btn if name == "select"
       html = @create_group(name, element) for name, element of btn if name != "select"
+      html = @create_select(element) for name, element of btn if name == "select"
     @element.prepend(html)
 
   execcmd: (ev) ->
@@ -63,9 +75,8 @@ class SimpleHtml5Editor
     tag = target.dataset['tag']
     console.log target
 
-    if tag == "formatBlock"
-      data = target.dataset['format']
-    else if tag in [ 'createlink', 'insertImage' ]
+    data = target.dataset['format']
+    if tag in [ 'createlink', 'insertImage' ]
       data = prompt(@langs[tag])
     if data
       return document.execCommand(tag, false, data)

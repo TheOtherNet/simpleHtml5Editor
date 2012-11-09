@@ -18,4 +18,3 @@ clean:
 	rm -rf css/simpleHtml5Editor.css css/simpleHtml5Editor.min.css js/simpleHtml5Editor.js js/simpleHtml5Editor.min.js
 
 .PONY: clean build compress all
-foo
